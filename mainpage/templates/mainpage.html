@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Disease Diagnosis</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: #E0F2F1;
+            color: #333;
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav {
+            margin: 20px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #FFD700;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #004D40;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin: 10px 0 20px;
+        }
+
+        .hero .btn {
+            padding: 10px 20px;
+            margin: 10px;
+            color: white;
+            background-color: #FF5722;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .hero .btn:hover {
+            background-color: #E64A19;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            background-color: #009688;
+            color: white;
+            margin: 10px;
+            padding: 20px;
+            margin-bottom: 0px;
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        .f{
+            background-color: #009688;
+            color: white;
+            margin-top: 0px;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 5px;
+            width: 200px;
+            height: 150px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .f:hover {
+            transform: translateY(-5px);
+        }
+        footer {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Skin Disease Diagnosis</h1>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Prices</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h1>Welcome</h1>
+        <p>Your trusted partner in skin disease diagnosis.</p>
+        <br>
+        <a href="/loginpage" class="btn">Login</a>
+        <a href="/signuppage" class="btn">Signup</a>
+    </div>
+
+    <div class="features">
+        <div class="feature">Acne</div>
+        <div class="feature">Psoriasis</div>
+        <div class="feature">Vitiligo</div>
+        <div class="feature">Ichthyosis</div>
+        <div class="feature">Fungal Infections</div>
+        <div class="feature">Warts</div>
+    </div>
+    <div class="features">
+        <img src="https://as1.ftcdn.net/v2/jpg/00/84/89/40/1000_F_84894067_CuwekuG8gmNmqVrp182Qj7VeJqAgMvnO.jpg" class="f" alt="Image 1">
+        <img src="https://www.shutterstock.com/image-vector/woman-acne-isolated-after-bath-600nw-691658509.jpg" class="f" alt="Image 2">
+        <img src="https://img.freepik.com/premium-vector/sad-young-girl-is-upset-about-her-problem-skin-acne-pimples_605517-271.jpg" class="f" alt="Image 3">
+        <img src="https://img.freepik.com/premium-vector/cute-smiling-girl-with-cosmetic-patches-eyes-moisturizing-skin-around-eyes_605517-348.jpg" class="f" alt="Image 4">
+        <img src="https://thumbs.dreamstime.com/b/cartoon-depiction-youthful-male-displaying-acne-his-facial-skin-cartoon-depicts-young-man-acne-forehead-nose-321793344.jpg" class="f" alt="Image 5">
+        <img src="https://thumbs.dreamstime.com/b/cartoon-depiction-youthful-male-displaying-acne-his-facial-skin-cartoon-depicts-young-man-acne-forehead-nose-321471649.jpg" class="f" alt="Image 6">
+    </div>
+    <footer>
+        <p>Thank you for choosing us</p>
+    </footer>
+</body>
+</html>

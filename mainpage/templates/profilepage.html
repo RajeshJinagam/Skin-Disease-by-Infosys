@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            background-color: #E0F2F1;
+            font-family: 'Lato', sans-serif;
+        }
+        .container {
+            width: 510px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        input{
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button, a {
+            width: 100%; 
+            padding: 10px; 
+            background-color: #FF5722;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            display: block; 
+            text-align: center; 
+            text-decoration: none; 
+            margin-bottom: 10px; 
+            box-sizing: border-box; 
+        }
+        a:hover, button:hover {
+            background-color: #E64A19;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ request.user.username }}!</h1>
+        <h2>Upload Your Picture</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image" required>
+            <button type="submit">Upload</button>
+            <a href="/" id="back">Home</a>
+        </form>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</body>
+</html>
