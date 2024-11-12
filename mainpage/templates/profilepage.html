@@ -16,10 +16,14 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; 
         }
         h1 {
-            text-align: center;
             color: #007BFF;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
             margin-bottom: 20px;
         }
         label {
@@ -59,19 +63,34 @@
             text-align: center;
             margin-top: 10px;
         }
+        .image-preview {
+            display: block;
+            margin: 20px auto; 
+            height: 300px;
+            width: 300px;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
+    
     <div class="container">
         <h1>Welcome, {{ request.user.username }}!</h1>
         <h2>Upload Your Picture</h2>
+        {% if message %}
+        <p class="error">{{ message }}</p>
+        {% endif %}
         
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="image" required>
+            <input type="file" name="image">
+            {% if img %}
+            <img src="{{ img }}" alt="Image not selected" class="image-preview">
+            {% endif %}
             <button type="submit">Upload</button>
             <a href="/" id="back">Home</a>
         </form>
+        
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">Logout</button>

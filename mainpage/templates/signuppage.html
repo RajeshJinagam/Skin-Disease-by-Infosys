@@ -62,6 +62,7 @@
     </style>
 </head>
 <body>
+    
     <div class="container">
         <h1>Welome to Signup page!!!</h1> 
         <form method="POST">
@@ -71,7 +72,12 @@
                 {{ field.label_tag }}<br>
                 {{ field }}
                 {% for error in field.errors %}
-                <p style="color:red;"></p> {{ error }}
+                {% if messages %}
+                {% for message in messages %}
+                <ul><p style="color:red;">{{ message }}</p></ul>
+                {% endfor %}
+                {% endif %}
+                <ul><p style="color:red;">{{ error }}</p></ul>
                 {% endfor %}
             </p>
             {% endfor %}
@@ -79,14 +85,6 @@
         </form>
     
         <a href="/loginpage">Already have an account?   Login here</a>
-    
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
     </div>
 </body>
 </html>

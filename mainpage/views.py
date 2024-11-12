@@ -2,14 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+import base64
 
 def mainpage(request):
     return render(request, 'mainpage.html')
 
 def loginpage(request):
-    if request.user.is_authenticated:
-        return redirect('/profilepage')
     if request.method == "POST":
+        if request.user.is_authenticated:
+            return redirect('/profilepage')
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -25,9 +26,7 @@ def loginpage(request):
     form = AuthenticationForm()
     return render(request, 'loginpage.html', {'form': form})
 
-def signuppage(request):
-    if request.user.is_authenticated:
-        return redirect('/profilepage')  
+def signuppage(request):  
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -47,5 +46,17 @@ def signuppage(request):
 
 def profilepage(request):
     if request.user.is_authenticated:
-        return render(request, 'profilepage.html')  
-    return redirect('/loginpage') 
+        message=""
+        if request.method == "POST": 
+            if request.FILES.get("image"):
+                image_file = request.FILES["image"].read()
+                encoded_image = base64.b64encode(image_file).decode('utf-8')
+                img_data_url = f"data:image/jpeg;base64,{encoded_image}"
+                return render(request, "profilepage.html", {"img": img_data_url})
+            else:
+                message = "Please select an image to upload."
+        return render(request, "profilepage.html", {"message": message})
+    return redirect("/loginpage")
+
+def about(request):
+    return render(request,'about.html')
