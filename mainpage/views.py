@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import base64
+from django.core.files.storage import FileSystemStorage
 
 def mainpage(request):
     return render(request, 'mainpage.html')
@@ -44,7 +45,7 @@ def signuppage(request):
 
     return render(request, 'signuppage.html', {'form': form})
 
-def profilepage(request):
+#def profilepage(request):
     if request.user.is_authenticated:
         message=""
         if request.method == "POST": 
@@ -57,6 +58,18 @@ def profilepage(request):
                 message = "Please select an image to upload."
         return render(request, "profilepage.html", {"message": message})
     return redirect("/loginpage")
+
+
+def profilepage(request):
+    if(request.method=="POST"):
+        if(request.FILES.get('image')):
+            img_name = request.FILES['image']
+            fs = FileSystemStorage()
+            filename = fs.save(img_name.name,img_name)
+            img_url = fs.url(filename)
+            return render(request,'profilepage.html',{'img':img_url})
+    else:
+        return render(request,'profilepage.html')
 
 def about(request):
     return render(request,'about.html')
