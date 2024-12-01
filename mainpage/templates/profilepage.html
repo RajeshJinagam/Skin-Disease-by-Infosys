@@ -3,98 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Profile Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* General Styling */
         body {
-            background-color: #E0F2F1;
-            font-family: 'Lato', sans-serif;
+            background: linear-gradient(to right, #67b26f, #4ca2cd);
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            margin: 0;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-size: 36px;
+            font-weight: 700;
+            color: #00796b;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px; transform: translateY(-5px);
+            transform: translateY(-10px);
+            filter: none;
+            fill: #004d40;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 10px 15px;
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: #00796b;
+            color: #ffffff;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
         }
         .container {
-            width: 510px;
-            margin: 100px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center; 
+            max-width: fit-content;
+            display: flex;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
         }
+
+        .container:hover {
+            transform: translateY(-10px);
+        }
+
         h1 {
-            color: #007BFF;
-            margin-bottom: 20px;
+            color: #00796b;
+            margin-bottom: 25px;
+            font-size: 32px;
         }
+
         h2 {
-            color: #333;
+            color: #004d40;
             margin-bottom: 20px;
+            font-size: 24px;
         }
+
         label {
             font-size: 18px;
             display: block;
             margin-bottom: 10px;
-            color: #333;
         }
-        input{
-            width: 95%;
+
+        input[type="file"] {
+            display: block;
+            margin: 0 auto 20px;
             padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
             font-size: 16px;
+            border: 2px solid #00796b;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            width: 400px;
         }
+
+        input[type="file"]:hover {
+            border-color: #004d40;
+        }
+
         button, a {
-            width: 100%; 
-            padding: 10px; 
-            background-color: #FF5722;
-            color: white;
+            display: inline-block;
+            padding: 14px 25px;
+            background-color: #00796b;
+            color: #ffffff;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 18px;
-            transition: background-color 0.3s;
-            display: block; 
-            text-align: center; 
-            text-decoration: none; 
-            margin-bottom: 10px; 
-            box-sizing: border-box; 
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-        a:hover, button:hover {
-            background-color: #E64A19;
+
+        button:hover, a:hover {
+            background-color: #004d40;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
+
         .error {
             color: red;
-            text-align: center;
             margin-top: 10px;
         }
+
         .image-preview {
             display: block;
-            margin: 20px auto; 
-            height: 300px;
+            margin: 20px auto;
+            height: 200px;
             width: 300px;
-            object-fit: contain;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .image-preview:hover {
+            transform: scale(1.05);
+        }
+
+        .result-section {
+            margin-top: 60px;
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-section h2 {
+            color: #00796b;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .result-section h3 {
+            color: #004d40;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .result-section:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .navigation {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .navigation a, .navigation form {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .dark-green {
+            filter: brightness(90%) contrast(1000%) hue-rotate(-10deg);
         }
     </style>
 </head>
 <body>
-    
+    <header>
+        <div class="logo">
+            <img src="https://img.icons8.com/ios-filled/100/004d40/skin.png" alt="DermaSense Logo">
+            DermaScan
+        </div>
+        <div class="nav-buttons">
+        <img class="dark-green" src="https://cdn-icons-png.flaticon.com/512/8336/8336244.png" alt="user" height="50px" width="50px" style="margin-top: 10px;">
+        <h3 style="margin-top: 25px;">{{ request.user.username }}</h3>
+        <form method="POST" action="{% url 'logout' %}">
+            <a href="/" style="margin: 10px;">Home</a>
+            {% csrf_token %}
+            <button type="submit" style="margin: 10px;">Logout</button>
+        </form>
+        </div>
+    </header>
     <div class="container">
-        <h1>Welcome, {{ request.user.username }}!</h1>
-        <h2>Upload Your Picture</h2>
-        {% if message %}
-        <p class="error">{{ message }}</p>
+        <div>
+            <br>
+        <br>
+        <h2>Upload Your Picture for Diagnosis</h2>
+        {% if messages %}
+        <div class="messages">
+        {% for message in messages %}
+            <div class="error" style="margin-bottom:10px ;">{{ message }}</div>
+        {% endfor %}
+        </div>
+        {% for message in messages %}{% empty %}{% endfor %}
         {% endif %}
-        
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="image">
             {% if img %}
-            <img src="{{ img }}" alt="Image not selected" class="image-preview">
+            {% else %}
+                <label for="uploadImage">Select an Image</label>
             {% endif %}
+            <div style="display: flex;"> 
+            <input type="file" id="uploadImage" name="uploadImage" style="margin-right: 10px; margin-left: 90px; margin-top: 14px;">
             <button type="submit">Upload</button>
-            <a href="/" id="back">Home</a>
+            </div>
         </form>
-        
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+        {% if img %}
+            <div>
+                <h2>Uploaded Image Preview</h2>
+                <img src="{{ img }}" alt="Uploaded Image" class="image-preview">
+            </div>
+        {% else %}
+            <h5>Note: Ensure that uploading image should be clear</h5>
+        {% endif %}
+        </div>
+        <div>
+        {% if obj1 %}
+        <div style="margin: 20px;">
+            <div class="result-section">
+                <h2>Skin Disease Result</h2>
+                <h3>{{ obj1 }}</h3>
+            </div>
+            {% endif %}
+            {% if obj2 %}
+            <div class="result-section">
+                <h2>Diagnosis</h2>
+                <h3>{{ obj2 }}</h3>
+            </div>
+        {% endif %}
+        </div>
     </div>
 </body>
 </html>

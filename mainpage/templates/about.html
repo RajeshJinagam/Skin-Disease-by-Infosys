@@ -3,166 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skin Disease Diagnosis</title>
+    <title>Profile Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* General Styling */
         body {
-            margin: 0;
-            font-family: 'Lato', sans-serif;
-            background-color: #E0F2F1;
+            background: linear-gradient(to right, #67b26f, #4ca2cd);
+            font-family: 'Roboto', sans-serif;
             color: #333;
+            margin: 0;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        header {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
+        .logo { font-size: 36px;
+            font-weight: 700;
+            color: #00796b;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px; transform: translateY(-5px);
+            transform: translateY(-10px);
+            filter: none;
+            fill: #004d40;
         }
 
         nav {
-            margin: 20px;
+            display: flex;
+            gap: 30px;
         }
 
         nav a {
-            margin: 0 15px;
-            color: white;
+            color: #333;
             text-decoration: none;
             font-size: 18px;
-            transition: color 0.3s;
+            font-weight: 500;
+            padding: 10px 15px;
+            transition: all 0.3s;
+            border-radius: 5px;
         }
 
         nav a:hover {
-            color: #FFD700;
+            background-color: #00796b;
+            color: #ffffff;
         }
 
-        .hero {
-            text-align: left;
-            padding: 50px 20px;
-            background-color: #004D40;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin: 0;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin: 10px 0 20px;
-        }
-
-        .hero .btn {
-            padding: 10px 20px;
-            margin: 10px;
-            color: white;
-            background-color: #FF5722;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: background-color 0.3s;
-        }
-
-        .hero .btn:hover {
-            background-color: #E64A19;
-        }
-
-        .features {
+        .nav-buttons {
             display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
         }
 
-        .feature {
-            background-color: #009688;
-            color: white;
-            margin: 10px;
-            padding: 20px;
-            margin-bottom: 0px;
-            border-radius: 5px;
-            width: 200px;
-            text-align: center;
-            transition: transform 0.3s;
+        .container:hover {
+            transform: translateY(-10px);
         }
 
-        .feature:hover {
-            transform: translateY(-5px);
-        }
-        .f{
-            background-color: #009688;
-            color: white;
-            margin-top: 0px;
-            margin: 10px;
-            padding: 20px;
-            border-radius: 5px;
-            width: 200px;
-            height: 150px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        .f:hover {
-            transform: translateY(-5px);
-        }
-        footer {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 14px;
-            color: #777;
+        h1 {
+            color: #00796b;
+            margin-bottom: 25px;
+            font-size: 32px;
         }
 
-        @media (max-width: 600px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-            .hero p {
-                font-size: 16px;
-            }
-            .features {
-                flex-direction: column;
-                align-items: center;
-            }
+        h2 {
+            color: #004d40;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 0 auto 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #00796b;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            width: 400px;
+        }
+
+        input[type="file"]:hover {
+            border-color: #004d40;
+        }
+
+        button, a {
+            display: inline-block;
+            padding: 14px 25px;
+            background-color: #00796b;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover, a:hover {
+            background-color: #004d40;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .image-preview {
+            display: block;
+            margin: 20px auto;
+            height: 200px;
+            width: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .image-preview:hover {
+            transform: scale(1.05);
+        }
+
+        .result-section {
+            margin: 40px 0;
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-section h2 {
+            color: #00796b;
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+
+        .result-section h3 {
+            color: #004d40;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .result-section:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .navigation {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .navigation a, .navigation form {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .dark-green {
+            filter: brightness(90%) contrast(1000%) hue-rotate(-10deg);
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to Skin Disease Diagnosis</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="#services">Services</a>
-            <a href="#portfolio">Prices</a>
-            <a href="#contact">Contact</a>
-        </nav>
+        <div class="logo">
+            <img src="https://img.icons8.com/ios-filled/100/004d40/skin.png" alt="DermaSense Logo">
+            DermaScan
+        </div>
+        <div class="nav-buttons">
+        <img class="dark-green" src="https://cdn-icons-png.flaticon.com/512/8336/8336244.png" alt="user" height="50px" width="50px" style="margin-top: 10px;">
+        <h3 style="margin-top: 25px;">{{ request.user.username }}</h3>
+        <form method="POST" action="{% url 'logout' %}">
+            <a href="/" style="margin: 10px;">Home</a>
+            {% csrf_token %}
+            <button type="submit" style="margin: 10px;">Logout</button>
+        </form>
+        </div>
     </header>
-
-    <div class="hero">
-     <h1>About</h1><br>
-    <h2>How It Works</h2>
-Our Skin Disease Detection Tool is designed to provide users with a quick, informative assessment of potential skin conditions through a simple and user-friendly process.
-
-Image Upload and Preparation
-
-Start by uploading a clear photo of the affected skin area. Good lighting and a clear focus help ensure accurate results.
-The tool then refines the image to remove any unnecessary background, focusing solely on the visible skin condition for precise evaluation.
-Image Analysis and Condition Comparison
-
-Using a comprehensive set of reference images and information about various skin conditions, the tool compares your uploaded image to known visual patterns associated with common skin issues.
-Based on this analysis, it identifies potential conditions that may match the appearance of the skin area you uploaded.
-Detailed Report and Recommendations
-
-The tool generates a preliminary report that includes possible conditions along with descriptions, common symptoms, and suggested next steps.
-This report helps users understand what the skin condition might be and encourages them to consult a healthcare provider for a detailed examination and personalized advice.
-Privacy and Security
-
-Your privacy is a top priority. All images and data are processed securely, with no information stored or shared without your permission. This ensures a safe and confidential experience for every user.
-Our Purpose
-Our goal is to make early skin health assessments more accessible and to encourage users to seek timely medical advice for their conditions. By providing an initial assessment, we empower users to take informed steps toward managing their skin health.
-
-Disclaimer
-This tool offers preliminary insights but is not a replacement for medical diagnosis. We recommend consulting a qualified healthcare professional for accurate diagnosis and treatment options.
+    <div class="container">
+        <br>
+        <br>
+        <h2>Upload Your Picture for Diagnosis</h2>
+        {% if messages %}
+        <div class="messages">
+        {% for message in messages %}
+            <div class="error" style="margin-bottom:10px ;">{{ message }}</div>
+        {% endfor %}
+        </div>
+        {% for message in messages %}{% empty %}{% endfor %}
+        {% endif %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if img %}
+            {% else %}
+                <label for="uploadImage">Select an Image</label>
+            {% endif %}
+            <div style="display: flex;"> 
+            <input type="file" id="uploadImage" name="uploadImage" style="margin-right: 10px; margin-left: 90px; margin-top: 14px;">
+            <button type="submit">Upload</button>
+            </div>
+        </form>
+        {% if img %}
+            <div>
+                <h2>Uploaded Image Preview</h2>
+                <img src="{{ img }}" alt="Uploaded Image" class="image-preview">
+            </div>
+        {% endif %}
+        {% if obj1 %}
+        <h3 style="margin: 30px;color: darkorange;">Scroll down for the results</h3>
+        {% endif %}
+        {% if obj1 %}
+        <div>
+            <div class="result-section">
+                <h2>Skin Disease Result</h2>
+                <h3>{{ obj1 }}</h3>
+            </div>
+            {% else %}
+            <h5>Note: Ensure that uploading image should be clear</h5>
+            {% endif %}
+            {% if obj2 %}
+            <div class="result-section">
+                <h2>Diagnosis</h2>
+                <h3>{{ obj2 }}</h3>
+            </div>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>

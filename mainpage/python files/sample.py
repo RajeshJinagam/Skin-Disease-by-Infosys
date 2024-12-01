@@ -2,95 +2,79 @@ import os
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader
+import timm
+from joblib import dump
+from torchvision import datasets, transforms
+from torch import optim
 
 # Paths for training and test sets
 train_set_path = r"C:\Users\ACER\Desktop\skin-disease-datasaet\train_set"
 test_set_path = r"C:\Users\ACER\Desktop\skin-disease-datasaet\test_set"
 
-# Function to preprocess a single image
-import cv2
-def preprocess_image(image_path, target_size=(250, 250)):
-    img = cv2.imread(image_path)
-    if img is None:
-        return None
-    img_resized = cv2.resize(img, target_size)
-    img_normalized = img_resized / 255.0
-    return img_normalized
+# Device configuration
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {device}")
 
-# Function to preprocess a dataset
-def preprocess_dataset(data_path, target_size=(250, 250)):
-    images, labels = [], []
-    class_names = os.listdir(data_path)
-    for class_index, class_name in enumerate(class_names):
-        class_folder = os.path.join(data_path, class_name)
-        for image_name in os.listdir(class_folder):
-            image_path = os.path.join(class_folder, image_name)
-            img = preprocess_image(image_path, target_size)
-            if img is not None:
-                images.append(img)
-                labels.append(class_index)
-    return np.array(images), np.array(labels), class_names
+# Data preprocessing
+transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # ImageNet normalization
+])
 
-# Preprocess datasets
-X_train, y_train, train_classes = preprocess_dataset(train_set_path)
-X_test, y_test, test_classes = preprocess_dataset(test_set_path)
+# Load your skin disease dataset
+train_dataset = datasets.ImageFolder(root=train_set_path, transform=transform)
+test_dataset = datasets.ImageFolder(root=test_set_path, transform=transform)
 
-# Convert datasets to PyTorch tensors
-X_train_tensor = torch.tensor(X_train, dtype=torch.float32).permute(0, 3, 1, 2)
-y_train_tensor = torch.tensor(y_train, dtype=torch.long)
-X_test_tensor = torch.tensor(X_test, dtype=torch.float32).permute(0, 3, 1, 2)
-y_test_tensor = torch.tensor(y_test, dtype=torch.long)
+train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=16, shuffle=False)
 
-# Create DataLoaders
-train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
-test_dataset = TensorDataset(X_test_tensor, y_test_tensor)
+# Load pretrained model from timm and modify it for your classification task
+model = timm.create_model('vit_base_patch16_224', pretrained=True)  # Updated model name
+num_classes = len(train_dataset.classes)  # Update based on your dataset
+model.head = nn.Linear(model.head.in_features, num_classes)
+model = model.to(device)
 
-train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-
-# Define the neural network
-class SkinDiseaseClassifier(nn.Module):
-    def __init__(self, num_classes):
-        super(SkinDiseaseClassifier, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, padding=1)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = nn.Linear(64 * 62 * 62, 128)  # Adjust for input size
-        self.fc2 = nn.Linear(128, num_classes)
-
-    def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(x.size(0), -1)  # Flatten
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
-        return x
-
-# Initialize model, loss function, and optimizer
-model = SkinDiseaseClassifier(num_classes=len(train_classes))
+# Loss and optimizer
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
 # Train the model
-for epoch in range(10):  # Adjust epochs as needed
+num_epochs = 5  # Reduced epochs for faster training
+for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
     for inputs, labels in train_loader:
+        inputs, labels = inputs.to(device), labels.to(device)  # Move data to the appropriate device
+
+        # Debugging information to confirm shapes
+        print(f"Inputs shape: {inputs.shape}, Labels shape: {labels.shape}")
+
         optimizer.zero_grad()
         outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-        running_loss += loss.item()
-    print(f"Epoch {epoch+1}, Loss: {running_loss / len(train_loader)}")
+
+        # Debugging output shape
+        print(f"Outputs shape: {outputs.shape}")
+
+        # Ensure loss computation has correct dimensions
+        try:
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+            running_loss += loss.item()
+        except RuntimeError as e:
+            print(f"RuntimeError during loss computation: {e}")
+            break  # Exit the loop to debug the error
+
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {running_loss / len(train_loader):.4f}")
 
 # Evaluate the model
 model.eval()
 correct, total = 0, 0
 with torch.no_grad():
     for inputs, labels in test_loader:
+        inputs, labels = inputs.to(device), labels.to(device)  # Move data to the appropriate device
         outputs = model(inputs)
         _, predicted = torch.max(outputs, 1)
         total += labels.size(0)
@@ -98,8 +82,14 @@ with torch.no_grad():
 
 print(f"Accuracy: {100 * correct / total:.2f}%")
 
-# Save the model
-torch.save(model.state_dict(), "skin_disease_model.pth")
+# Save the model state
+torch.save(model.state_dict(), "dino_skin_disease_model.pth")
+print("Model state saved as 'dino_skin_disease_model.pth'")
 
-# To load the model later:
-# model.load_state_dict(torch.load("skin_disease_model.pth"))
+# Save model parameters for later use with joblib
+model_params = {
+    'num_classes': num_classes,
+    'state_dict': model.state_dict()
+}
+dump(model_params, 'dino_skin_disease_model.joblib')
+print("Model parameters saved as 'dino_skin_disease_model.joblib'")
